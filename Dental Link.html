@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dental Link - Book an Appointment</title>
+    <style>
+        :root {
+            --primary: #2a9d8f;
+            --secondary: #264653;
+            --accent: #e9c46a;
+            --light: #f8f9fa;
+            --dark: #343a40;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: white;
+            color: black;
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: Black;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        nav ul li a:hover {
+            color: var(--accent);
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 5rem 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--accent);
+            color: var(--secondary);
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background-color: #f4a261;
+            transform: translateY(-2px);
+        }
+        
+        .booking-section {
+            padding: 4rem 0;
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--secondary);
+        }
+        
+        .booking-form {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--light);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.7rem center;
+            background-size: 1rem;
+        }
+        
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .time-slot {
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 0.5rem;
+            text-align: center;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .time-slot:hover {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .time-slot.selected {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .time-slot.booked {
+            background-color: #e9ecef;
+            color: #adb5bd;
+            cursor: not-allowed;
+            text-decoration: line-through;
+        }
+        
+        .services {
+            margin-top: 2rem;
+        }
+        
+        .service-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .service-option input {
+            margin-right: 0.5rem;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--primary);
+            color: white;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            background-color: #248277;
+        }
+        
+        .dentists {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .dentist-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .dentist-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .dentist-img {
+            height: 200px;
+            background-color: #eee;
+            background-size: 90% 90%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        .dentist-info {
+            padding: 1.5rem;
+        }
+        
+        .dentist-info h3 {
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .dentist-info p {
+            color: #666;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .specialty {
+            display: inline-block;
+            background-color: var(--accent);
+            color: var(--secondary);
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        footer {
+            background-color: var(--secondary);
+            color: white;
+            padding: 3rem 0 1rem;
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section p, .footer-section a {
+            color: #adb5bd;
+            text-decoration: none;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            border-top: 1px solid #495057;
+            padding-top: 1rem;
+            font-size: 0.9rem;
+            color: #adb5bd;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+ .logo {
+            height: 60px;
+        }
+    </style>
+</head>
+<body>
+
+  <header>
+        <div class="container header-content">
+           <img src="https://i.ibb.co/1x5GRrk/jojo.jpg" alt="Dental Link Logo" class="logo">
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Dentists</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+
+
+
+
+    
+    <section class="hero">
+        <div class="container">
+            <h1>Quality Dental Care</h1>
+            <p>Book an appointment with our experienced dentists for a healthier, brighter smile. We offer a wide range of dental services to meet your needs.</p>
+            <a href="#booking" class="btn">Book Now</a>
+        </div>
+    </section>
+    
+ <section class="dentists-section">
+        <div class="container">
+            <h2 class="section-title">Dental Students</h2>
+            <div class="dentists">
+                <div class="dentist-card">
+                    <div class="dentist-img" style="background-image: url('https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');"></div>
+                    <div class="dentist-info">
+                        <h3> Sarah Smith</h3>
+                        <span class="specialty">General Dentistry</span>
+                        <p>general dental care and cosmetic dentistry.</p>
+                    </div>
+                </div>
+                
+                <div class="dentist-card">
+                    <div class="dentist-img" style="background-image: url('https://images.unsplash.com/photo-1594824476967-48c8b964273f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');"></div>
+                    <div class="dentist-info">
+                        <h3> Michael Johnson</h3>
+                        <span class="specialty">Orthodontics</span>
+                        <p>braces and alignment treatments for all ages.</p>
+                    </div>
+                </div>
+                
+                <div class="dentist-card">
+                    <div class="dentist-img" style="background-image: url('https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');"></div>
+                    <div class="dentist-info">
+                        <h3> Jad Lee</h3>
+                        <span class="specialty">Pediatric Dentistry</span>
+                        <p> children's dental care with a gentle approach.</p>
+                    </div>
+                </div>
+                
+                <div class="dentist-card">
+                    <div class="dentist-img" style="background-image: url('https://images.unsplash.com/photo-1622902046580-2b47f47f5471?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');"></div>
+                    <div class="dentist-info">
+                        <h3> David Wong</h3>
+                        <span class="specialty">Oral Surgery</span>
+                        <p>wisdom teeth extraction and dental implants.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="booking" class="booking-section">
+        <div class="container">
+            <h2 class="section-title">Book Your Appointment</h2>
+            <div class="booking-form">
+                <form id="appointmentForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="tel" id="phone" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dentist">Select Dentist</label>
+                        <select id="dentist" class="form-control" required>
+                            <option value="">-- Select a Dentist --</option>
+                            <option value="smith"> Sarah Smith - General Dentistry</option>
+                            <option value="johnson"> Michael Johnson - Orthodontics</option>
+                            <option value="lee"> Jad Lee - Pediatric Dentistry</option>
+                            <option value="wong"> David Wong - Oral Surgery</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="date">Appointment Date</label>
+                        <input type="date" id="date" class="form-control" required min="">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Available Time Slots</label>
+                        <div class="time-slots">
+                            <div class="time-slot">9:00 AM</div>
+                            <div class="time-slot">9:30 AM</div>
+                            <div class="time-slot">10:00 AM</div>
+                            <div class="time-slot booked">10:30 AM</div>
+                            <div class="time-slot">11:00 AM</div>
+                            <div class="time-slot">11:30 AM</div>
+                            <div class="time-slot">1:00 PM</div>
+                            <div class="time-slot">1:30 PM</div>
+                            <div class="time-slot">2:00 PM</div>
+                            <div class="time-slot">2:30 PM</div>
+                            <div class="time-slot">3:00 PM</div>
+                            <div class="time-slot">3:30 PM</div>
+                            <div class="time-slot">4:00 PM</div>
+                            <div class="time-slot booked">4:30 PM</div>
+                        </div>
+                        <input type="hidden" id="selectedTime" required>
+                    </div>
+                    
+                    <div class="form-group services">
+                        <label>Select Service</label>
+                        <div class="service-option">
+                            <input type="radio" id="cleaning" name="service" value="cleaning" checked>
+                            <label for="cleaning">Teeth Cleaning </label>
+                        </div>
+                        <div class="service-option">
+                            <input type="radio" id="filling" name="service" value="filling">
+                            <label for="filling">Tooth Filling </label>
+                        </div>
+                        <div class="service-option">
+                            <input type="radio" id="whitening" name="service" value="whitening">
+                            <label for="whitening">Teeth Whitening </label>
+                        </div>
+                        <div class="service-option">
+                            <input type="radio" id="checkup" name="service" value="checkup">
+                            <label for="checkup">Dental Checkup </label>
+                        </div>
+                        <div class="service-option">
+                            <input type="radio" id="other" name="service" value="other">
+                            <label for="other">Other (Please specify)</label>
+                            <input type="text" id="otherService" class="form-control" style="margin-top: 0.5rem; display: none;">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="notes">Additional Notes</label>
+                        <textarea id="notes" class="form-control" rows="3"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Book Appointment</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    
+   
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Dental Link</h3>
+                    <p>Providing quality dental care for the whole family since 2005.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p>Aljubeiha, Amman, Jordan</p>
+                    <p>Phone: +962 6 5355000 - Ext 23557 </p>
+                    <p>Fax: +962 6 5300248 </p>
+                    <p>Email: dent.diwan@ju.edu.jo</p>
+
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Hours</h3>
+                    <p>Sunday-Thursday: 8AM - 5PM</p>
+                    <p>Saturday: 9AM - 2PM</p>
+                    <p>Friday: Closed</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 Dental Link. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Set minimum date to today
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').min = today;
+            
+            // Time slot selection
+            const timeSlots = document.querySelectorAll('.time-slot:not(.booked)');
+            timeSlots.forEach(slot => {
+                slot.addEventListener('click', function() {
+                    // Remove selected class from all slots
+                    document.querySelectorAll('.time-slot').forEach(s => {
+                        s.classList.remove('selected');
+                    });
+                    
+                    // Add selected class to clicked slot
+                    this.classList.add('selected');
+                    document.getElementById('selectedTime').value = this.textContent;
+                });
+            });
+            
+            // Show other service input when selected
+            document.getElementById('other').addEventListener('change', function() {
+                document.getElementById('otherService').style.display = this.checked ? 'block' : 'none';
+                if (this.checked) {
+                    document.getElementById('otherService').required = true;
+                } else {
+                    document.getElementById('otherService').required = false;
+                }
+            });
+            
+            // Form submission
+            document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form values
+                const firstName = document.getElementById('firstName').value;
+                const lastName = document.getElementById('lastName').value;
+                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
+                const dentist = document.getElementById('dentist').value;
+                const date = document.getElementById('date').value;
+                const time = document.getElementById('selectedTime').value;
+                const service = document.querySelector('input[name="service"]:checked').value;
+                const notes = document.getElementById('notes').value;
+                
+                // In a real application, you would send this data to a server
+                console.log('Appointment booked:', {
+                    firstName,
+                    lastName,
+                    email,
+                    phone,
+                    dentist,
+                    date,
+                    time,
+                    service,
+                    notes
+                });
+                
+                // Show confirmation
+                alert(`Thank you, ${firstName}! Your appointment has been booked for ${date} at ${time}. A confirmation has been sent to ${email}.`);
+                
+                // Reset form
+                this.reset();
+                document.querySelectorAll('.time-slot').forEach(s => {
+                    s.classList.remove('selected');
+                });
+                document.getElementById('selectedTime').value = '';
+            });
+        });
+    </script>
+</body>
+</html>
